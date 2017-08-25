@@ -1,0 +1,20 @@
+---
+# tasks file for webserver
+- name: Install  httpd
+  yum: pkg=httpd state=latest
+
+- name: Start  httpd
+  service: name=httpd state=running enabled=yes
+
+- name: Install ssl module
+  yum: pkg=mod_ssl state=latest
+
+- name: Creates ssl directory
+  file: path=/etc/httpd/ssl state=directory
+
+- name: create self-signed SSL cert
+  command: openssl req -new -nodes -x509 -subj "/C=US/ST=Texas/L=Dallas/O=IT/CN=abcd" -days 365 -keyout /etc/httpd/ssl/myserver.key -out /etc/httpd/ssl/myserver.crt -extensions v3_ca
+
+- name: Deploy the static page
+  template: src=index.html.j2 dest=/var/www/html/index.html mode=0664
+  notify: Restart httpd
