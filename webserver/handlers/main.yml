@@ -1,2 +1,4 @@
 ---
 # handlers file for webserver
+- name: Restart httpd
+  service: name=httpd state=restarted
