@@ -18,3 +18,7 @@
 - name: Deploy the static page
   template: src=index.html.j2 dest=/var/www/html/index.html mode=0664
   notify: Restart httpd
+
+- name: Deploy the httpd config file
+  template: src=httpd.conf.j2 dest=/etc/httpd/conf/ mode=0664
+  notify: Restart httpd
